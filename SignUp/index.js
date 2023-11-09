@@ -1,15 +1,25 @@
 const ref = new Firebase("myapp-eva.firebaseapp.com");
 
-const user = {
-    email: "evalecuona58@gmail.com",
-    password: "1234"
-};
 
-ref.createUser(user, function(error){
-    if(error){
-      console.log(error.code);
-    }else{
-      console.log("Tu usuario se ha registrado");
-    }
+const signupForm = document.getElementById('signupForm');
+const signupEmail = document.getElementById('signupEmail');
+const signupPassword = document.getElementById('signupPassword');
+
+
+signupForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const email = signupEmail.value;
+  const password = signupPassword.value;
+
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+          const user = userCredential.user;
+          console.log('Usuario registrado: ', user);
+      })
+      .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error(`Error al registrarse: ${errorCode} - ${errorMessage}`);
+      });
 });
-
